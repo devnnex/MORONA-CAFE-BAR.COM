@@ -18,6 +18,13 @@ const PRODUCT_IMAGE_LIBRARY = {
   "de-cienaga": ["cienaga-refreshments.jpg"],
   default: ["beer-selection.jpg"]
 };
+const LOCAL_PRODUCT_IMAGES = new Set([
+  "coffee-hot.jpg",
+  "beer-selection.jpg",
+  "cold-coffee.jpg",
+  "savanna-bakery.jpg",
+  "cienaga-refreshments.jpg"
+]);
 
 const IMAGE_CATEGORY_GROUPS = {
   "del-muelle": { aliases: ["muelle", "cafe", "café", "espresso", "americano", "latte", "capuccino", "cappuccino", "moca", "mocaccino", "aromatica"] },
@@ -384,7 +391,14 @@ async function loadMenu({ force = false, background = false } = {}) {
       const url = new URL(configuredUrl);
       url.searchParams.set("action", "menu");
 
-      const response = await fetch(url.toString(), { method: "GET", cache: "no-store" });
+      const controller = new AbortController();
+      const requestTimeout = window.setTimeout(() => controller.abort(), 8000);
+      let response;
+      try {
+        response = await fetch(url.toString(), { method: "GET", cache: "no-store", signal: controller.signal });
+      } finally {
+        window.clearTimeout(requestTimeout);
+      }
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const payload = await response.json();
@@ -526,7 +540,7 @@ function renderProducts() {
     return `
       <article class="product-card">
         <div>
-          ${image ? `<div class="product-visual"><img src="${escapeAttr(image)}" alt="${escapeAttr(product.nombre)}" loading="lazy"></div>` : ""}
+          ${image ? `<div class="product-visual"><img src="${escapeAttr(image)}" data-fallback-image="${escapeAttr(fallbackProductImage(product))}" alt="${escapeAttr(product.nombre)}" loading="lazy" onerror="handleProductImageError(event)"></div>` : ""}
           <div class="product-meta">
             <span>${escapeHtml(labelFromId(product.categoria_id))}</span>
             <span>${formatMoney(product.precio)}</span>
@@ -563,7 +577,7 @@ function openProductModal(productId, cartIndex = null) {
   let productQty = clampQuantity(cartItem?.qty || 1);
 
   el.modalContent.innerHTML = `
-    ${image ? `<div class="modal-product-visual"><img src="${escapeAttr(image)}" alt="${escapeAttr(product.nombre)}"></div>` : ""}
+    ${image ? `<div class="modal-product-visual"><img src="${escapeAttr(image)}" data-fallback-image="${escapeAttr(fallbackProductImage(product))}" alt="${escapeAttr(product.nombre)}" onerror="handleProductImageError(event)"></div>` : ""}
     <div class="modal-title">
       <span class="eyebrow">${escapeHtml(labelFromId(product.categoria_id))}</span>
       <h2>${escapeHtml(product.nombre)}</h2>
@@ -1433,15 +1447,31 @@ function resolveProductImage(product) {
   const explicit = String(product.imagen || "").trim();
   if (/^https?:\/\//i.test(explicit)) return explicit;
   if (explicit) {
-    if (explicit.startsWith("./") || explicit.startsWith("images/")) return explicit.startsWith("images/") ? `./${explicit}` : explicit;
-    return `./images/${explicit}`;
+    const filename = explicit.split(/[?#]/)[0].split("/").pop();
+    if (LOCAL_PRODUCT_IMAGES.has(filename)) {
+      if (explicit.startsWith("./") || explicit.startsWith("images/")) return explicit.startsWith("images/") ? `./${explicit}` : explicit;
+      return `./images/${filename}`;
+    }
   }
 
+  return fallbackProductImage(product);
+}
+
+function fallbackProductImage(product) {
   const family = detectProductImageFamily(product);
   const images = PRODUCT_IMAGE_LIBRARY[family] || PRODUCT_IMAGE_LIBRARY.default;
   const source = `${product.producto_id || ""}:${product.nombre || ""}`;
   const index = [...source].reduce((total, character) => total + character.charCodeAt(0), 0) % images.length;
   return `./images/${images[index]}`;
+}
+
+function handleProductImageError(event) {
+  const image = event.currentTarget;
+  const fallback = image?.dataset?.fallbackImage;
+  if (!image || !fallback || image.dataset.imageFallbackApplied === "true") return;
+  image.dataset.imageFallbackApplied = "true";
+  image.onerror = null;
+  image.src = fallback;
 }
 
 function detectProductImageFamily(product) {

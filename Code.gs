@@ -1,10 +1,10 @@
 const SPREADSHEET_ID = "";
 const ADMIN_PASSWORD = "5678";
 const ADMIN_TOKEN = ADMIN_PASSWORD;
-const MENU_CACHE_KEY = "morona_cafe_bar_menu_v1";
+const MENU_CACHE_KEY = "morena_cafe_bar_menu_v1";
 const MENU_CACHE_TTL_SECONDS = 15;
 const CACHE_MAX_BYTES = 95000;
-const SEED_VERSION = "morona-cafe-bar-catalog-v1";
+const SEED_VERSION = "morena-cafe-bar-catalog-v1";
 const SEED_PROPERTY = "catalog_seed_version";
 
 const CONFIG = {

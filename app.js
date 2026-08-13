@@ -2,12 +2,12 @@
 // respuestas { products }, { productos }, o categorias con productos anidados.
 const API_URL = window.DRINKS_API_URL || "";
 
-const BUSINESS_NAME = "Morona Café Bar";
+const BUSINESS_NAME = "Morena Café y Bar";
 const BUSINESS_PHONE = "57310826516";
 const DELIVERY_FEE = 0;
-const CART_KEY = "morona_cafe_bar_cart_v1";
-const CHECKOUT_DRAFT_KEY = "morona_cafe_bar_checkout_v1";
-const MENU_CACHE_PREFIX = "morona_cafe_bar_menu_v1:";
+const CART_KEY = "morena_cafe_bar_cart_v1";
+const CHECKOUT_DRAFT_KEY = "morena_cafe_bar_checkout_v1";
+const MENU_CACHE_PREFIX = "morena_cafe_bar_menu_v1:";
 const MENU_CACHE_TTL_MS = 15000;
 const MAX_QTY = 999999;
 const PRODUCT_IMAGE_LIBRARY = {

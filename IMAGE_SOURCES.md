@@ -1,8 +1,8 @@
-# Activos visuales de Morona Café Bar
+# Activos visuales de Morena Café y Bar
 
 Las imágenes del catálogo son activos locales preparados para la interfaz:
 
-- `logo.png`: emblema de Morona Café Bar.
+- `logo.png`: emblema de Morena Café y Bar.
 - `coffee-hot.jpg`: café caliente de Del Muelle.
 - `beer-selection.jpg`: selección de cervezas de Del Puerto.
 - `cold-coffee.jpg`: bebidas frías de café y frutas de Del Río.

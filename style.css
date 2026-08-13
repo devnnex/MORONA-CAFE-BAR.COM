@@ -1805,7 +1805,7 @@ form label {
   }
 }
 
-/* Carrito y checkout: superficie clara, legible y coherente con Morona Café Bar. */
+/* Carrito y checkout: superficie clara, legible y coherente con Morena Café y Bar. */
 .drawer,
 .checkout-card {
   color: #101c1a;
@@ -1919,7 +1919,7 @@ form label {
   background: #fff6f5;
 }
 
-/* Morona Cafe Bar: palette drawn from the menu card. */
+/* Morena Cafe y Bar: palette drawn from the menu card. */
 body {
   background-color: var(--bg);
 }

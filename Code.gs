@@ -1,10 +1,10 @@
 const SPREADSHEET_ID = "";
 const ADMIN_PASSWORD = "5678";
 const ADMIN_TOKEN = ADMIN_PASSWORD;
-const MENU_CACHE_KEY = "drinks_coffee_market_menu_v1";
+const MENU_CACHE_KEY = "morona_cafe_bar_menu_v1";
 const MENU_CACHE_TTL_SECONDS = 15;
 const CACHE_MAX_BYTES = 95000;
-const SEED_VERSION = "drinks-coffee-market-catalog-v1";
+const SEED_VERSION = "morona-cafe-bar-catalog-v1";
 const SEED_PROPERTY = "catalog_seed_version";
 
 const CONFIG = {
@@ -20,29 +20,82 @@ const CONFIG = {
   }
 };
 
-// Catálogo inicial de Drinks Coffee & Market.
-// Se inserta solo cuando el producto_id todavía no existe en la hoja.
-// Así el despliegue es repetible y no sobrescribe cambios manuales.
+function seedProduct_(productoId, categoriaId, nombre, precio, imagen, orden, descripcion, activo) {
+  return {
+    producto_id: productoId,
+    categoria_id: categoriaId,
+    nombre: nombre,
+    precio: precio,
+    descripcion: descripcion,
+    imagen: imagen,
+    orden: orden,
+    activo: activo !== false
+  };
+}
+
 const SEED_PRODUCTS = [
-  { producto_id: "prod-bc1", categoria_id: "bebidas-calientes", nombre: "Espresso", precio: 3500, descripcion: "Café intenso y lleno de sabor.", imagen: "coffee-espresso.jpg", orden: 1, activo: true },
-  { producto_id: "prod-bc2", categoria_id: "bebidas-calientes", nombre: "Café latte", precio: 6000, descripcion: "Espresso con leche cremosa y suave.", imagen: "coffee-cappuccino.jpg", orden: 2, activo: true },
-  { producto_id: "prod-bc3", categoria_id: "bebidas-calientes", nombre: "Americano", precio: 3500, descripcion: "Café clásico, ligero y equilibrado.", imagen: "coffee-espresso.jpg", orden: 3, activo: true },
-  { producto_id: "prod-bc4", categoria_id: "bebidas-calientes", nombre: "Cappuccino tradicional", precio: 7000, descripcion: "Espresso, leche vaporizada y espuma cremosa.", imagen: "coffee-cappuccino.jpg", orden: 4, activo: true },
-  { producto_id: "prod-bc5", categoria_id: "bebidas-calientes", nombre: "Cappuccino vainilla", precio: 8000, descripcion: "Cappuccino cremoso con un toque dulce de vainilla.", imagen: "coffee-cappuccino.jpg", orden: 5, activo: true },
-  { producto_id: "prod-bc6", categoria_id: "bebidas-calientes", nombre: "Chocolate de la abuela", precio: 8000, descripcion: "Chocolate caliente, reconfortante y preparado con cariño.", imagen: "coffee-cappuccino.jpg", orden: 6, activo: true },
-  { producto_id: "prod-bc7", categoria_id: "bebidas-calientes", nombre: "Milo caliente", precio: 8000, descripcion: "Bebida de chocolate caliente, cremosa y reconfortante.", imagen: "coffee-cappuccino.jpg", orden: 7, activo: true },
-  { producto_id: "prod-jn1", categoria_id: "jugos-naturales", nombre: "Jugo de lulo", precio: 7000, descripcion: "Jugo natural de lulo preparado en agua.", imagen: "juice-yellow.jpg", orden: 8, activo: true },
-  { producto_id: "prod-jn2", categoria_id: "jugos-naturales", nombre: "Jugo de fresa", precio: 7000, descripcion: "Fresa natural licuada y servida bien fría.", imagen: "juice-berries.jpg", orden: 9, activo: true },
-  { producto_id: "prod-jn3", categoria_id: "jugos-naturales", nombre: "Jugo de mora", precio: 10000, descripcion: "Mora natural preparada en leche.", imagen: "juice-berries.jpg", orden: 10, activo: true },
-  { producto_id: "prod-jn4", categoria_id: "jugos-naturales", nombre: "Jugo de maracuyá", precio: 10000, descripcion: "Maracuyá natural, refrescante y aromático.", imagen: "juice-yellow.jpg", orden: 11, activo: true },
-  { producto_id: "prod-jn5", categoria_id: "jugos-naturales", nombre: "Jugo de tomate de árbol", precio: 10000, descripcion: "Jugo natural de tomate de árbol preparado en leche.", imagen: "juice-yellow.jpg", orden: 12, activo: true },
-  { producto_id: "prod-fr1", categoria_id: "frappuccinos", nombre: "Frappuccino", precio: 18000, descripcion: "Café frío licuado, cremoso y terminado con chantilly.", imagen: "frappuccino.jpg", orden: 13, activo: true },
-  { producto_id: "prod-so1", categoria_id: "sodas", nombre: "Soda tradicional", precio: 7000, descripcion: "Soda fría con hielo, cítricos y hierbabuena.", imagen: "lemonade.jpg", orden: 14, activo: true },
-  { producto_id: "prod-so2", categoria_id: "sodas", nombre: "Soda frutos rojos", precio: 12000, descripcion: "Soda burbujeante con frutos rojos y cítricos.", imagen: "soda-berries.jpg", orden: 15, activo: true },
-  { producto_id: "prod-so3", categoria_id: "sodas", nombre: "Soda frutos amarillos", precio: 12000, descripcion: "Soda refrescante con notas tropicales y cítricas.", imagen: "juice-yellow.jpg", orden: 16, activo: true },
-  { producto_id: "prod-li1", categoria_id: "limonadas", nombre: "Limonada tradicional", precio: 12000, descripcion: "Limonada natural con hielo y limón fresco.", imagen: "lemonade.jpg", orden: 17, activo: true },
-  { producto_id: "prod-li2", categoria_id: "limonadas", nombre: "Limonada de fresa", precio: 12000, descripcion: "Limonada natural con fresa y hielo.", imagen: "juice-berries.jpg", orden: 18, activo: true },
-  { producto_id: "prod-li3", categoria_id: "limonadas", nombre: "Limonada hierbabuena", precio: 12000, descripcion: "Limonada con hierbabuena fresca y hielo.", imagen: "lemonade.jpg", orden: 19, activo: true }
+  seedProduct_("prod-muelle-01", "del-muelle", "Capuchino", 10000, "coffee-hot.jpg", 1, "Cafe cremoso preparado al momento."),
+  seedProduct_("prod-muelle-02", "del-muelle", "Capuchino con Amaretto", 14000, "coffee-hot.jpg", 2, "Capuchino con un toque aromatico de Amaretto."),
+  seedProduct_("prod-muelle-03", "del-muelle", "Capuchino con Baileys", 14000, "coffee-hot.jpg", 3, "Capuchino con crema y Baileys."),
+  seedProduct_("prod-muelle-04", "del-muelle", "Capuchino con Vainilla", 13000, "coffee-hot.jpg", 4, "Capuchino suave con notas de vainilla."),
+  seedProduct_("prod-muelle-05", "del-muelle", "Latte", 10000, "coffee-hot.jpg", 5, "Espresso con leche cremosa."),
+  seedProduct_("prod-muelle-06", "del-muelle", "Moca", 11500, "coffee-hot.jpg", 6, "Cafe con chocolate y leche vaporizada."),
+  seedProduct_("prod-muelle-07", "del-muelle", "Espresso doble", 5500, "coffee-hot.jpg", 7, "Doble extraccion de cafe intenso."),
+  seedProduct_("prod-muelle-08", "del-muelle", "Cafe americano", 7000, "coffee-hot.jpg", 8, "Cafe equilibrado y aromatico."),
+  seedProduct_("prod-muelle-09", "del-muelle", "Cafe irlandes", 13000, "coffee-hot.jpg", 9, "Cafe especial con caracter irlandes."),
+  seedProduct_("prod-muelle-10", "del-muelle", "Cafe tradicional", 4000, "coffee-hot.jpg", 10, "Cafe tradicional servido caliente."),
+  seedProduct_("prod-muelle-11", "del-muelle", "Aromaticas frutales", 7000, "coffee-hot.jpg", 11, "Infusion caliente con notas frutales."),
+  seedProduct_("prod-puerto-01", "del-puerto", "Heineken lata 330 ml", 6000, "beer-selection.jpg", 12, "Cerveza nacional e importada."),
+  seedProduct_("prod-puerto-02", "del-puerto", "Heineken botella 330 ml", 7000, "beer-selection.jpg", 13, "Cerveza lager en botella."),
+  seedProduct_("prod-puerto-03", "del-puerto", "3 Cordilleras", 8500, "beer-selection.jpg", 14, "Cerveza artesanal colombiana."),
+  seedProduct_("prod-puerto-04", "del-puerto", "Sol botella 250 ml", 6000, "beer-selection.jpg", 15, "Cerveza ligera y refrescante."),
+  seedProduct_("prod-puerto-05", "del-puerto", "Miller Lite botella 330 ml", 7000, "beer-selection.jpg", 16, "Lager ligera importada."),
+  seedProduct_("prod-puerto-06", "del-puerto", "Corona 330 ml", 7000, "beer-selection.jpg", 17, "Cerveza lager mexicana."),
+  seedProduct_("prod-puerto-07", "del-puerto", "Club Colombia lata", 7000, "beer-selection.jpg", 18, "Lager colombiana premium."),
+  seedProduct_("prod-puerto-08", "del-puerto", "Stella Artois botella 300 ml", 9000, "beer-selection.jpg", 19, "Lager europea de perfil elegante."),
+  seedProduct_("prod-puerto-09", "del-puerto", "Asahi 330 ml", 15000, "beer-selection.jpg", 20, "Lager japonesa importada."),
+  seedProduct_("prod-puerto-10", "del-puerto", "Peroni botella 330 ml", 15000, "beer-selection.jpg", 21, "Lager italiana importada."),
+  seedProduct_("prod-puerto-11", "del-puerto", "Flensburger Pilsener botella 330 ml", 26000, "beer-selection.jpg", 22, "Pilsener alemana importada."),
+  seedProduct_("prod-puerto-12", "del-puerto", "Flensburger Keller botella 330 ml", 20000, "beer-selection.jpg", 23, "Cerveza alemana sin filtrar."),
+  seedProduct_("prod-puerto-13", "del-puerto", "Bitburger botella 330 ml", 20000, "beer-selection.jpg", 24, "Pilsener alemana."),
+  seedProduct_("prod-puerto-14", "del-puerto", "Bitburger botella 550 ml", 30000, "beer-selection.jpg", 25, "Presentacion grande importada."),
+  seedProduct_("prod-puerto-15", "del-puerto", "Erdinger Weissbier lata 500 ml", 28000, "beer-selection.jpg", 26, "Cerveza de trigo alemana."),
+  seedProduct_("prod-puerto-16", "del-puerto", "Steam Brew Wheat lata 500 ml", 23000, "beer-selection.jpg", 27, "Cerveza de trigo importada."),
+  seedProduct_("prod-puerto-17", "del-puerto", "Hollandia botella 330 ml", 5000, "beer-selection.jpg", 28, "Lager refrescante."),
+  seedProduct_("prod-puerto-18", "del-puerto", "Innis & Gunn botella 330 ml", 31000, "beer-selection.jpg", 29, "Cerveza escocesa de especialidad."),
+  seedProduct_("prod-rio-01", "del-rio", "Frappuchino", 15000, "cold-coffee.jpg", 30, "Bebida fria de cafe, cremosa y refrescante."),
+  seedProduct_("prod-rio-02", "del-rio", "Frappuchino con Amaretto", 17000, "cold-coffee.jpg", 31, "Frappuchino con un toque de Amaretto."),
+  seedProduct_("prod-rio-03", "del-rio", "Frappuchino con Baileys", 17000, "cold-coffee.jpg", 32, "Frappuchino con crema y Baileys."),
+  seedProduct_("prod-rio-04", "del-rio", "Ice Latte", 11000, "cold-coffee.jpg", 33, "Latte frio con hielo."),
+  seedProduct_("prod-rio-05", "del-rio", "Mocaccino", 17000, "cold-coffee.jpg", 34, "Cafe frio con chocolate y leche."),
+  seedProduct_("prod-rio-06", "del-rio", "Cafe irlandes con licor", 0, "cold-coffee.jpg", 35, "Precio por confirmar en la carta.", false),
+  seedProduct_("prod-rio-07", "del-rio", "Granizados con licor", 0, "cold-coffee.jpg", 36, "Precio por confirmar en la carta.", false),
+  seedProduct_("prod-rio-08", "del-rio", "Jugos naturales", 10000, "cold-coffee.jpg", 37, "Jugos naturales preparados al momento."),
+  seedProduct_("prod-rio-09", "del-rio", "Sodas frutales con Ginger", 12000, "cold-coffee.jpg", 38, "Soda frutal con ginger y hielo."),
+  seedProduct_("prod-rio-10", "del-rio", "Sodas frutales / Hatsu", 14000, "cold-coffee.jpg", 39, "Soda frutal con Hatsu."),
+  seedProduct_("prod-sabana-01", "de-sabana", "Torta de queso", 6500, "savanna-bakery.jpg", 40, "Porcion de torta de queso."),
+  seedProduct_("prod-sabana-02", "de-sabana", "Torta de pina y queso", 6500, "savanna-bakery.jpg", 41, "Torta suave con pina y queso."),
+  seedProduct_("prod-sabana-03", "de-sabana", "Torta de zanahoria", 13000, "savanna-bakery.jpg", 42, "Torta de zanahoria especiada."),
+  seedProduct_("prod-sabana-04", "de-sabana", "Torta de amapola", 13000, "savanna-bakery.jpg", 43, "Torta de amapola de la casa."),
+  seedProduct_("prod-sabana-05", "de-sabana", "Torta de temporada", 13000, "savanna-bakery.jpg", 44, "Seleccion de temporada."),
+  seedProduct_("prod-sabana-06", "de-sabana", "Galletas", 8000, "savanna-bakery.jpg", 45, "Galletas para acompanar tu bebida."),
+  seedProduct_("prod-sabana-07", "de-sabana", "Cheesecake", 4000, "savanna-bakery.jpg", 46, "Porcion de cheesecake."),
+  seedProduct_("prod-sabana-08", "de-sabana", "Cuchareable", 0, "savanna-bakery.jpg", 47, "Precio por confirmar en la carta.", false),
+  seedProduct_("prod-sabana-09", "de-sabana", "Empanada de pollo y queso", 5000, "savanna-bakery.jpg", 48, "Empanada horneada con pollo y queso."),
+  seedProduct_("prod-sabana-10", "de-sabana", "Empanada ranchera", 5000, "savanna-bakery.jpg", 49, "Empanada con sabor ranchero."),
+  seedProduct_("prod-sabana-11", "de-sabana", "Empanada mexicana", 5000, "savanna-bakery.jpg", 50, "Empanada con sazon mexicana."),
+  seedProduct_("prod-sabana-12", "de-sabana", "Empanada de carne", 6000, "savanna-bakery.jpg", 51, "Empanada rellena de carne."),
+  seedProduct_("prod-sabana-13", "de-sabana", "Sandwich croissant", 5000, "savanna-bakery.jpg", 52, "Croissant relleno para una comida ligera."),
+  seedProduct_("prod-sabana-14", "de-sabana", "Croissant", 4000, "savanna-bakery.jpg", 53, "Croissant horneado."),
+  seedProduct_("prod-cienaga-01", "de-cienaga", "Te Hatsu", 9000, "cienaga-refreshments.jpg", 54, "Te Hatsu frio."),
+  seedProduct_("prod-cienaga-02", "de-cienaga", "Agua Hatsu", 6000, "cienaga-refreshments.jpg", 55, "Agua Hatsu."),
+  seedProduct_("prod-cienaga-03", "de-cienaga", "Soda Hatsu", 7000, "cienaga-refreshments.jpg", 56, "Soda Hatsu fria."),
+  seedProduct_("prod-cienaga-04", "de-cienaga", "Soda Bretana 300 ml", 5000, "cienaga-refreshments.jpg", 57, "Soda Bretana bien fria."),
+  seedProduct_("prod-cienaga-05", "de-cienaga", "Canada Dry", 5000, "cienaga-refreshments.jpg", 58, "Gaseosa ginger ale fria."),
+  seedProduct_("prod-cienaga-06", "de-cienaga", "Gaseosa Postobon", 5000, "cienaga-refreshments.jpg", 59, "Gaseosa Postobon."),
+  seedProduct_("prod-cienaga-07", "de-cienaga", "Agua Cristal 600 ml", 4000, "cienaga-refreshments.jpg", 60, "Agua Cristal."),
+  seedProduct_("prod-cienaga-08", "de-cienaga", "Hit 400 ml", 5000, "cienaga-refreshments.jpg", 61, "Bebida Hit fria."),
+  seedProduct_("prod-cienaga-09", "de-cienaga", "Gaseosa 400 ml", 5000, "cienaga-refreshments.jpg", 62, "Gaseosa personal fria.")
 ];
 
 const SEED_EXTRAS = [];

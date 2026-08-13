@@ -1,20 +1,20 @@
 :root {
-  color-scheme: dark;
-  --bg: #f5f7f3;
-  --bg-soft: #e8f2ee;
-  --panel: rgba(255, 255, 255, 0.92);
-  --panel-solid: #ffffff;
-  --line: rgba(14, 159, 146, 0.18);
-  --line-strong: rgba(14, 159, 146, 0.52);
-  --text: #12231f;
-  --muted: #687b75;
-  --accent: #0e9f92;
-  --accent-deep: #08766d;
-  --red-soft: #66cfc0;
-  --red-hot: #08766d;
-  --green: #38b59f;
+  color-scheme: light;
+  --bg: #f1e3d0;
+  --bg-soft: #fbf4e8;
+  --panel: rgba(255, 250, 241, 0.94);
+  --panel-solid: #fffaf2;
+  --line: rgba(79, 101, 46, 0.22);
+  --line-strong: rgba(79, 101, 46, 0.58);
+  --text: #26321e;
+  --muted: #6e715c;
+  --accent: #6d7f3b;
+  --accent-deep: #3d5426;
+  --red-soft: #e3a05f;
+  --red-hot: #bd5428;
+  --green: #778f45;
   --danger: #d9534f;
-  --shadow: 0 22px 70px rgba(0, 0, 0, 0.42);
+  --shadow: 0 22px 70px rgba(74, 54, 30, 0.16);
   --radius: 8px;
   --topbar: 76px;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -74,8 +74,9 @@ body {
   margin: 0;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 12% 0%, rgba(14, 159, 146, 0.2), transparent 30%),
-    linear-gradient(135deg, #fbfdf9 0%, #eaf3ee 48%, #fffaf0 100%);
+    radial-gradient(circle at 8% 0%, rgba(224, 153, 88, 0.23), transparent 28%),
+    radial-gradient(circle at 100% 18%, rgba(109, 127, 59, 0.14), transparent 30%),
+    linear-gradient(135deg, #f8eddd 0%, #ead8bd 52%, #f8efe1 100%);
   color: var(--text);
 }
 
@@ -1804,7 +1805,7 @@ form label {
   }
 }
 
-/* Carrito y checkout: superficie clara, legible y coherente con Drinks Coffee & Market. */
+/* Carrito y checkout: superficie clara, legible y coherente con Morona Café Bar. */
 .drawer,
 .checkout-card {
   color: #101c1a;
@@ -1916,4 +1917,133 @@ form label {
   color: #9b3834;
   border-color: rgba(217, 83, 79, 0.28);
   background: #fff6f5;
+}
+
+/* Morona Cafe Bar: palette drawn from the menu card. */
+body {
+  background-color: var(--bg);
+}
+
+.topbar,
+.menu-tools,
+.search-box,
+.cart-btn,
+.ghost-btn,
+.secondary-btn,
+.tab-btn,
+.drawer,
+.modal-card,
+.product-card,
+.hero-panel > div {
+  border-color: var(--line);
+  background-color: var(--panel-solid);
+}
+
+.topbar {
+  background: rgba(255, 250, 241, 0.9);
+}
+
+.menu-toggle,
+.cart-btn,
+.search-box,
+.menu-tools > #refresh-menu {
+  color: var(--text);
+  border-color: rgba(109, 127, 59, 0.48);
+  background: #fffdf8;
+  box-shadow: 0 8px 22px rgba(74, 54, 30, 0.1);
+}
+
+.menu-toggle::before {
+  background: var(--accent);
+  box-shadow: 0 -6px 0 var(--accent), 0 6px 0 var(--accent);
+}
+
+.menu-toggle::after {
+  border-color: rgba(109, 127, 59, 0.34);
+}
+
+.hero {
+  border-color: var(--line);
+  background:
+    linear-gradient(135deg, rgba(224, 153, 88, 0.3), transparent 42%),
+    linear-gradient(180deg, rgba(255, 250, 241, 0.96), rgba(239, 223, 201, 0.84));
+  box-shadow: 0 22px 60px rgba(74, 54, 30, 0.15);
+}
+
+.hero-panel > div {
+  background: rgba(255, 250, 241, 0.78);
+}
+
+.product-card,
+.category-btn,
+.drawer,
+.modal-card,
+.checkout-card {
+  color: var(--text);
+  box-shadow: 0 16px 42px rgba(74, 54, 30, 0.11);
+}
+
+.category-btn.active,
+.category-btn:hover,
+.add-btn,
+.primary-btn {
+  border-color: var(--accent-deep);
+  color: #fffaf2;
+  background: linear-gradient(180deg, #82984c 0%, #5f742f 100%);
+}
+
+.add-btn:hover,
+.primary-btn:hover {
+  background: linear-gradient(180deg, #92a95a 0%, #6d7f3b 100%);
+}
+
+.price,
+.metric-label,
+.eyebrow,
+.search-box span {
+  color: var(--red-hot);
+}
+
+.side-panel {
+  background: linear-gradient(180deg, #354522 0%, #25351a 100%);
+  border-right-color: rgba(225, 178, 112, 0.35);
+}
+
+.side-panel,
+.side-panel * {
+  color: #fffaf2;
+}
+
+.side-link {
+  border-color: rgba(255, 250, 242, 0.2);
+  background: rgba(255, 250, 242, 0.08);
+}
+
+.floating-cart {
+  color: #fffaf2;
+  border-color: var(--accent-deep);
+  background: #5f742f;
+}
+
+.floating-cart span,
+.cart-btn strong {
+  color: #34431f;
+  background: #e2bb86;
+}
+
+.checkout-card input,
+.checkout-card textarea,
+.checkout-card select,
+.cart-item,
+.summary-row {
+  border-color: rgba(109, 127, 59, 0.25);
+  background: #fffdf8;
+}
+
+.checkout-card input:focus,
+.checkout-card textarea:focus,
+.checkout-card select:focus,
+.search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(109, 127, 59, 0.14);
 }
